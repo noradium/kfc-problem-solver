@@ -1,0 +1,35 @@
+{
+  "name": "kfc-problem-solver",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "react-router dev --host 0.0.0.0",
+    "build": "npm run wasm:build && react-router build",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:test": "node --test scripts/db.test.mjs",
+    "wasm:build": "cargo build --manifest-path solver/Cargo.toml --target wasm32-unknown-unknown --release --locked && node scripts/copy-wasm.mjs",
+    "wasm:test": "node --test scripts/wasm.test.mjs",
+    "test": "npm run db:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test"
+  },
+  "dependencies": {
+    "@react-router/node": "8.5.1",
+    "@react-router/serve": "8.5.1",
+    "isbot": "5.2.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router": "8.5.1"
+  },
+  "devDependencies": {
+    "@react-router/dev": "8.5.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  }
+}

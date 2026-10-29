@@ -1,0 +1,7 @@
+node_modules/
+build/
+.react-router/
+solver/target/
+public/wasm/*.wasm
+data/
+.env
