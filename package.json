@@ -14,7 +14,8 @@
     "db:test": "node --test scripts/db.test.mjs",
     "wasm:build": "cargo build --manifest-path solver/Cargo.toml --target wasm32-unknown-unknown --release --locked && node scripts/copy-wasm.mjs",
     "wasm:test": "node --test scripts/wasm.test.mjs",
-    "test": "npm run db:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test"
+    "test": "npm run contract:test && npm run db:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test",
+    "contract:test": "node --test --test-isolation=none tests/optimization-contract.test.ts"
   },
   "dependencies": {
     "@react-router/node": "8.5.1",
