@@ -8,18 +8,15 @@
   "scripts": {
     "dev": "react-router dev --host 0.0.0.0",
     "build": "npm run wasm:build && react-router build",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "vite preview --host 0.0.0.0 --outDir build/client",
     "typecheck": "react-router typegen && tsc --noEmit",
-    "db:migrate": "node scripts/migrate.mjs",
-    "db:test": "node --test scripts/db.test.mjs",
     "wasm:build": "cargo build --manifest-path solver/Cargo.toml --target wasm32-unknown-unknown --release --locked && node scripts/copy-wasm.mjs",
     "wasm:test": "node --test scripts/wasm.test.mjs",
-    "test": "npm run contract:test && npm run db:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test",
-    "contract:test": "node --test --test-isolation=none tests/optimization-contract.test.ts"
+    "test": "npm run catalog:test && npm run contract:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test",
+    "contract:test": "node --test --test-isolation=none tests/optimization-contract.test.ts",
+    "catalog:test": "node --test --test-isolation=none tests/catalog.test.ts"
   },
   "dependencies": {
-    "@react-router/node": "8.5.1",
-    "@react-router/serve": "8.5.1",
     "isbot": "5.2.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",

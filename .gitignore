@@ -3,5 +3,5 @@ build/
 .react-router/
 solver/target/
 public/wasm/*.wasm
-data/
+/data/
 .env
