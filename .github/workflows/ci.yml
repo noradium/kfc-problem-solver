@@ -12,7 +12,8 @@ jobs:
       - name: Install pinned Rust and WASM target
         run: rustup show
       - run: npm ci --include=dev
-      - run: npm run db:migrate
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+        env:
+          BASE_PATH: /kfc-problem-solver/

@@ -1,29 +1,33 @@
 # kfc-problem-solver
 
-KFC の希望商品と個数から、最安値のセット・単品の組み合わせを提案する Web アプリの開発基盤です。購入プランの最適化処理と実際の商品データは未実装です。
+希望商品と個数から、最安値のセット・単品の組み合わせを提案する Web アプリの開発基盤です。DB・バックエンドは使わず、静的な HTML・JavaScript・WebAssembly を GitHub Pages で配信します。
+
+現在はサンプルメニューの表示と Rust/WASM の接続確認まで実装しています。最適化アルゴリズムは未実装です。表示価格は架空の検証用データで、KFC の実際の価格ではありません。
 
 ## 構成
 
-- React Router 8.5.1 Framework Mode / React / TypeScript / Vite。Node.js 24 で SSR を実行します。
-- Rust 1.90.0 → `wasm32-unknown-unknown`。ブラウザから WASM を読み込みます。現在の公開関数は ABI バージョン確認のみで、整数線形計画ソルバーは今後実装します。
-- SQLite (`node:sqlite`)。DB 接続は `*.server.ts` に閉じ込め、loader が商品を取得します。DB ファイルをブラウザへ配信しません。
-- 商品 `products`、販売単位 `offers`、内訳 `offer_items` を定義。単品も内訳が1商品の販売単位として表現し、価格は整数の円で保存します。店舗・期間・選択式セットの制約は今後拡張します。
+- React Router 8.5.1 SPA Mode / React / TypeScript / Vite
+- Rust 1.90.0 → WebAssembly（現在は ABI バージョンの確認のみ）
+- `app/data/catalog.ts`: 商品・販売単位・セット内訳・整数の税込価格を直接定義
+- `app/domain/optimization.ts`: 最適化の入力・出力型
+- [docs/optimization.md](docs/optimization.md): 数理モデルと受け入れ仕様
 
-## 初回セットアップ
+ブラウザから DB や API への接続は不要です。Node.js と Rust は開発・ビルド時だけ必要で、配信時は不要です。
 
-Node.js 24 と公式 rustup をインストールしてください。Rust のバージョンと WASM ターゲットは `rust-toolchain.toml` で指定しています。
+## 開発
+
+Node.js 24 と公式 rustup をインストールします。Rust の固定バージョンと WASM ターゲットは `rust-toolchain.toml` に定義しています。
 
 ```sh
 npm ci --include=dev
 rustup show
-npm run db:migrate
 npm run wasm:build
 npm run dev
 ```
 
-開発サーバーのポートは 5173。Rust を変更した後は `npm run wasm:build` を再実行してください。SQLite の既定パスは作業ディレクトリからの `data/kfc.sqlite`。変更する場合は `DATABASE_PATH` をプロセスの環境変数で設定します（`.env` の自動読込には依存しません）。マイグレーションとサーバーに同じパスを指定してください。
+開発サーバーのポートは 5173。Rust の変更後は `npm run wasm:build` を再実行します。メニューは `app/data/catalog.ts` を編集します。ID は価格・名称の変更時も維持し、サンプルを実データに置き換える際は対象店舗・確認日・出典を記載してください。価格変更の反映には再ビルド・再デプロイが必要です。
 
-クラウドの既存ツールを使う場合は、先に次を実行します。
+クラウド環境に既にある Rust を使用する場合:
 
 ```sh
 export CARGO_HOME=/workspace/.kfc-tools/cargo
@@ -32,7 +36,7 @@ export PATH="$CARGO_HOME/bin:$PATH"
 cd /workspace/kfc-problem-solver
 ```
 
-## 検証と本番起動
+## 検証・静的ビルド
 
 ```sh
 npm run typecheck
@@ -41,8 +45,25 @@ npm run build
 npm start
 ```
 
-`npm test` は最適化仕様の受け入れ例、SQLite のマイグレーション再実行・制約、Rust、生成済み WASM の実行を検証します。本番サーバーの既定ポートは 3000。`npm run build` で WASM も生成します。ホーム画面で「接続済み (ABI v1)」と表示されればブラウザ上の WASM 接続を確認できます。
+`npm test` で静的メニューの整合性、最適化仕様の12例、Rust、生成 WASM を検証します。`npm run build` は WASM と静的サイトを生成します。配信するのは **`build/client/` だけ**です。`npm start` は Vite のローカルプレビュー（既定4173）です。
 
-商品データは初期状態では空です。公式価格を検証せずに仮の価格を登録しません。SQLite ファイルは Git 管理外のため、運用時には永続ボリュームとバックアップが必要です。
+リポジトリ名のサブパスでも確認してください:
 
-最適化の入力・出力の型は `app/domain/optimization.ts`、仕様と数理モデルは [docs/optimization.md](docs/optimization.md) に定義しています。`npm run contract:test` で架空データの期待結果を確認できます。今後はこの契約に沿って Rust/WASM に整数最適化処理を追加します。現在は最安値を計算しません。
+```sh
+BASE_PATH=/kfc-problem-solver/ npm run build
+BASE_PATH=/kfc-problem-solver/ npm start
+```
+
+ブラウザで `/kfc-problem-solver/` を開き、メニューと「接続済み (ABI v1)」の表示を確認します。`BASE_PATH` は先頭・末尾に `/` を付けます。Router の basename・Vite のアセットパス・WASM の URL がこの設定を共有します。
+
+## GitHub Pages に公開
+
+公開リポジトリは GitHub Free で Pages を利用できます。このアプリには有料の DB・サーバーは不要です。GitHub Pages / Actions の利用上限と利用規約は適用されます。
+
+1. リポジトリの **Settings → Pages → Build and deployment → Source** で **GitHub Actions** を選びます（管理権限が必要）。
+2. この変更を `main` にマージすると `.github/workflows/pages.yml` がテスト・ビルドし、`build/client/` を Pages に配信します。Actions から手動実行も可能です。
+3. 公開完了後、Actions の `github-pages` 環境に表示される URL を開きます。通常は `https://noradium.github.io/kfc-problem-solver/` です。
+
+公開パスは `actions/configure-pages` の出力からビルド時に設定します。秘密の API キーは不要です。カタログを含むすべての配信ファイルは閲覧者に公開されます。現在はトップページだけを扱います。将来パスを追加する場合、Pages にサーバーの SPA リライトがないため、静的事前生成などの対応が必要です。
+
+クラウド開発環境の Publish と GitHub Pages への公開は別の操作です。

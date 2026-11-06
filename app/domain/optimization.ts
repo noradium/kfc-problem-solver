@@ -9,7 +9,7 @@ export const OPTIMIZATION_LIMITS = {
   priceYen: 1_000_000,
 } as const;
 
-/** Positive safe integer matching the SQLite primary key. */
+/** Positive safe integer stable within the static catalog. */
 export type ProductId = number;
 export type OfferId = number;
 
