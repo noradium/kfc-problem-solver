@@ -2,12 +2,12 @@
 
 希望商品と個数から、最安値のセット・単品の組み合わせを提案する Web アプリの開発基盤です。DB・バックエンドは使わず、静的な HTML・JavaScript・WebAssembly を GitHub Pages で配信します。
 
-現在はサンプルメニューの表示と Rust/WASM の接続確認まで実装しています。最適化アルゴリズムは未実装です。表示価格は架空の検証用データで、KFC の実際の価格ではありません。
+サンプルメニューの希望個数を入力すると、Rust/WASM がブラウザ内で最安値の購入プランを計算します。購入する単品・セット、合計金額、余る商品を表示します。表示価格は架空の検証用データで、KFC の実際の価格ではありません。
 
 ## 構成
 
 - React Router 8.5.1 SPA Mode / React / TypeScript / Vite
-- Rust 1.90.0 → WebAssembly（現在は ABI バージョンの確認のみ）
+- Rust 1.90.0 → WebAssembly（整数被覆問題に特化した枝刈り付き探索、JSON ABI v2）
 - `app/data/catalog.ts`: 商品・販売単位・セット内訳・整数の税込価格を直接定義
 - `app/domain/optimization.ts`: 最適化の入力・出力型
 - [docs/optimization.md](docs/optimization.md): 数理モデルと受け入れ仕様
@@ -45,7 +45,7 @@ npm run build
 npm start
 ```
 
-`npm test` で静的メニューの整合性、最適化仕様の12例、Rust、生成 WASM を検証します。`npm run build` は WASM と静的サイトを生成します。配信するのは **`build/client/` だけ**です。`npm start` は Vite のローカルプレビュー（既定4173）です。
+`npm test` で静的メニューの整合性、最適化仕様の12例、Rust、生成 WASM を検証します。WASM の計算結果は小さな問題80件の独立した全探索とも比較し、不正入力・探索上限・32 bit を超える金額を検証します。`npm run build` は WASM と静的サイトを生成します。配信するのは **`build/client/` だけ**です。`npm start` は Vite のローカルプレビュー（既定4173）です。
 
 リポジトリ名のサブパスでも確認してください:
 
@@ -54,7 +54,7 @@ BASE_PATH=/kfc-problem-solver/ npm run build
 BASE_PATH=/kfc-problem-solver/ npm start
 ```
 
-ブラウザで `/kfc-problem-solver/` を開き、メニューと「接続済み (ABI v1)」の表示を確認します。`BASE_PATH` は先頭・末尾に `/` を付けます。Router の basename・Vite のアセットパス・WASM の URL がこの設定を共有します。
+ブラウザで `/kfc-problem-solver/` を開き、希望数を入力し、購入プランが表示されることを確認します。チキン3個・ポテト1個ならサンプル内の最安値は950円です。`BASE_PATH` は先頭・末尾に `/` を付けます。Router の basename・Vite のアセットパス・WASM の URL がこの設定を共有します。
 
 ## GitHub Pages に公開
 
@@ -67,3 +67,19 @@ BASE_PATH=/kfc-problem-solver/ npm start
 公開パスは `actions/configure-pages` の出力からビルド時に設定します。秘密の API キーは不要です。カタログを含むすべての配信ファイルは閲覧者に公開されます。現在はトップページだけを扱います。将来パスを追加する場合、Pages にサーバーの SPA リライトがないため、静的事前生成などの対応が必要です。
 
 クラウド開発環境の Publish と GitHub Pages への公開は別の操作です。
+
+## 計算と制限
+
+希望個数以上の購入を許容し、金額 → 余り → 販売単位数の順で最小化します。各商品の入力は0〜100個。空の入力は購入不要（0円）です。整数演算で枝刈り付き探索を行い、探索を完了した場合だけ最適解として表示します。汎用の外部ILPライブラリは使用していません。
+
+計算は専用 Web Worker 内で行います。入力変更・キャンセル時は Worker を終了し、古い結果を破棄します。Rust の探索上限は200,000ノード、起動・WASM取得を含む Worker の制限時間は5秒です。上限に達した場合は最安値未確定とし、Rust が見つけた実行可能な暫定解があれば併記します。Worker の制限時間で打ち切る場合、暫定解は返しません。大きいカタログでは時間内に解けない可能性があります。
+
+## ブラウザテスト
+
+```sh
+npx playwright install chromium
+BASE_PATH=/kfc-problem-solver/ npm run build
+npm run test:e2e
+```
+
+モバイル幅での入力・購入内訳・余り、入力検証、再計算、WASM取得失敗、キャンセル、時間切れを確認します。CIでも実行します。環境にインストール済みのChromiumを使う場合は `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium` を指定できます。

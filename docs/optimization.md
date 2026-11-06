@@ -1,6 +1,6 @@
 # 購入プラン最適化の仕様 v1
 
-この文書と `app/domain/optimization.ts` が、UI・商品カタログ・Rust/WASM 間の契約です。`tests/fixtures/optimization.ts` に架空価格の受け入れ例を定義しています。現段階では本番の最適化処理・実行時入力検証・WASM の JSON 転送は実装しません。
+この文書と `app/domain/optimization.ts` が、UI・商品カタログ・Rust/WASM 間の契約です。`tests/fixtures/optimization.ts` に架空価格の受け入れ例を定義しています。Rust/WASM の入口で実行時入力検証を行い、Web Worker 内で計算します。
 
 ## 対象範囲
 
@@ -51,7 +51,7 @@ v1 の入力上限では D ≤ 10,000、最適解の金額は 10,000,000,000 円
 
 上限値は `OPTIMIZATION_LIMITS` にも定義します。ゼロの希望数は UI が行を省略します。重複行の自動合算、文字列からの数値変換、丸めなどの暗黙の補正はしません。商品 ID と販売単位 ID は別の名前空間なので、両者で同じ数値は使用できます。
 
-v1 の実行時検証は、未対応 schemaVersion を `unsupported_schema`、必須フィールド不足・型不一致・空の名前を `invalid_structure`、整数条件違反や負数・ゼロ数量を `invalid_number`、有効な整数の上限超過を `limit_exceeded`、商品・販売単位 ID の重複を `duplicate_id`、items/demand 内の商品重複を `duplicate_product`、不明な参照を `unknown_product`、空の内訳を `empty_offer` として返す予定です。複数の違反がある入力では、どの違反を最初に返すかは保証しません。未知の追加フィールドは無視し、schemaVersion による互換性管理を行います。TypeScript の型だけでは外部 JSON は検証できません。Rust の入口で検証することを ソルバー実装の完了条件とします。
+v1 の実行時検証は、未対応 schemaVersion を `unsupported_schema`、必須フィールド不足・型不一致・空の名前を `invalid_structure`、整数条件違反や負数・ゼロ数量を `invalid_number`、有効な整数の上限超過を `limit_exceeded`、商品・販売単位 ID の重複を `duplicate_id`、items/demand 内の商品重複を `duplicate_product`、不明な参照を `unknown_product`、空の内訳を `empty_offer` として返します。複数の違反がある入力では、どの違反を最初に返すかは保証しません。未知の追加フィールドは無視し、schemaVersion による互換性管理を行います。TypeScript の型だけでは外部 JSON は検証できません。Rust の入口で検証することを ソルバー実装の完了条件とします。
 
 ## 出力契約
 
@@ -65,7 +65,7 @@ v1 の実行時検証は、未対応 schemaVersion を `unsupported_schema`、�
 
 `PurchasePlan` の purchases は購入数が正の販売単位だけを、重複なく ID 昇順で返します。surplus は希望数を引いた正の余りだけを、重複なく商品 ID 昇順で返します。totalPriceYen、totalSurplusQuantity、totalOfferQuantity は必ずその内訳から再計算できる値です。暫定解にも希望数を満たす制約と同じ集計ルールを適用します。
 
-金額の最小化だけ証明できていても、余り・販売単位数の最適化が時間切れなら `time_limit` です。時間制限の値、キャンセル、Worker と WASM の転送方法は PR #3・#4 で決め、入力の数学的意味とは切り離します。結果を画面へ適用する側は、計算開始後の入力変更を検知し古い結果を表示しない必要があります。
+金額の最小化だけ証明できていても、余り・販売単位数の最適化が時間切れなら `time_limit` です。Rustは200,000探索ノード、Workerは起動・ダウンロードを含め5秒を上限とします。どちらの上限も `time_limit` とし、探索完了前に最適性は主張しません。キャンセル・入力変更でWorkerを終了します。結果を画面へ適用する側は、計算開始後の入力変更を検知し古い結果を表示しない必要があります。
 
 ## 例と受け入れ条件
 
@@ -76,6 +76,13 @@ v1 の実行時検証は、未対応 schemaVersion を `unsupported_schema`、�
 - 希望がチキン3個・ポテト1個なら、セット1個＋チキン単品1個＝950 円、余り0個が最適です。
 - セットを500円とする別例で、チキン2個だけ希望するなら、セット1個＝500円・ポテト1個余りが、単品2個＝600円より優先されます。
 
-実行可能な例は `tests/fixtures/optimization.ts` を正とします。`npm run contract:test` は、小さな入力に対するテスト専用の全探索で期待結果の実行可能性と P・S・U の最適性を検証します。アプリ用ソルバーの実装・性能・実行時入力検証を検証するテストではありません。Rust ソルバーを追加するときは、これらの入力と期待結果を読み込んで同じ振る舞いを確認してください。
+実行可能な例は `tests/fixtures/optimization.ts` を正とします。`npm run contract:test` は、小さな入力に対するテスト専用の全探索で期待結果の実行可能性と P・S・U の最適性を検証します。このテスト自体はアプリ用ソルバーを実行しません。`npm run solver:test` が生成済みWASMを呼び、これらの例と小さな問題80件を独立した全探索に照合します。
 
-ケースには単品、セット、併用、余り、同額時の二段階の比較、購入不可、空の希望、無料商品を含めます。不正入力・時間切れの実装テストは実際のソルバーと Worker の追加時に行います。カタログは `app/data/catalog.ts` で管理します。DB・バックエンドは使用しません。
+ケースには単品、セット、併用、余り、同額時の二段階の比較、購入不可、空の希望、無料商品を含めます。不正入力・探索上限はWASMテスト、Workerの時間切れ・キャンセルはブラウザテストで検証します。カタログは `app/data/catalog.ts` で管理します。DB・バックエンドは使用しません。
+
+
+## 実装方式とWASM ABI v2
+
+`solver/src/lib.rs` の探索は販売単位ごとの整数購入数を列挙し、未充足商品の供給可否・商品ごとの最低単価の下界・現在の目的値で枝を刈ります。購入数は、その時点の不足をすべて満たすために役立つ数を上限にします。それを超える数は非負の価格・余り・購入数を改善しないため、最適解を失いません。各候補は (金額, 余り, 販売単位数) の整数タプルで比較します。探索を完了すれば三つすべての最適性を保証し、上限到達時は未確定の暫定解だけを返します。問題規模に対して最悪指数時間です。
+
+WASMへの転送はJSON UTF-8です。呼び出し側が `allocate(length)` で領域を確保し、入力を書いて `solve_json(pointer, length, budget)` を同期実行します。`result_ptr()` / `result_len()` で出力をコピーしてから、`release(pointer, length)` で入力領域を解放します。出力は次のsolveまでRustが保持します。ポインタはこの手順で得た領域だけを使います。メモリ成長に備えてsolve後はメモリバッファを取り直します。これらは `app/lib/wasm-api.ts` に閉じ込め、画面は型付きのWorkerクライアントだけを使います。
