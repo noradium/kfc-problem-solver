@@ -16,5 +16,6 @@ export const catalog: Catalog = {
     { id: 1, name: "チキン単品（サンプル）", priceYen: 300, items: [{ productId: 1, quantity: 1 }] },
     { id: 2, name: "ポテト単品（サンプル）", priceYen: 200, items: [{ productId: 2, quantity: 1 }] },
     { id: 3, name: "固定セット（サンプル）", priceYen: 650, items: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 1 }] },
+    { id: 4, name: "大きな固定セット（サンプル）", priceYen: 1100, items: [{ productId: 1, quantity: 4 }, { productId: 2, quantity: 2 }] },
   ],
 };

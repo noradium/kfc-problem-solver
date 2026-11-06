@@ -1,4 +1,4 @@
-/** JSON contract shared by the catalog, UI and future Rust/WASM solver.
+/** JSON contract shared by the catalog, UI and Rust/WASM solver.
  * Numbers must satisfy docs/optimization.md; TypeScript types do not validate JSON.
  */
 export const OPTIMIZATION_SCHEMA_VERSION = 1 as const;

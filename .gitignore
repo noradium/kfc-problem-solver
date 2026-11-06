@@ -5,3 +5,5 @@ solver/target/
 public/wasm/*.wasm
 /data/
 .env
+test-results/
+playwright-report/

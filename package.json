@@ -12,9 +12,11 @@
     "typecheck": "react-router typegen && tsc --noEmit",
     "wasm:build": "cargo build --manifest-path solver/Cargo.toml --target wasm32-unknown-unknown --release --locked && node scripts/copy-wasm.mjs",
     "wasm:test": "node --test scripts/wasm.test.mjs",
-    "test": "npm run catalog:test && npm run contract:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test",
+    "test": "npm run catalog:test && npm run contract:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test && npm run solver:test",
     "contract:test": "node --test --test-isolation=none tests/optimization-contract.test.ts",
-    "catalog:test": "node --test --test-isolation=none tests/catalog.test.ts"
+    "catalog:test": "node --test --test-isolation=none tests/catalog.test.ts",
+    "solver:test": "node --test --test-isolation=none tests/solver.test.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "isbot": "5.2.2",
@@ -23,6 +25,7 @@
     "react-router": "8.5.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@react-router/dev": "8.5.1",
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",

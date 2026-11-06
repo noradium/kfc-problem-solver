@@ -17,3 +17,5 @@ jobs:
       - run: npm run build
         env:
           BASE_PATH: /kfc-problem-solver/
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
