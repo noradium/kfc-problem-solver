@@ -1,24 +1,33 @@
 import { test, expect } from "@playwright/test";
 
-test("mobile: inputs produce the cheapest mixed purchase and stale results disappear", async ({ page }) => {
+test("mobile: official prices produce a purchase plan and stale results disappear", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", e => errors.push(e.message));
   const requests: string[] = [];
   page.on("request", r => requests.push(r.url()));
   await page.goto("./");
-  await expect(page.getByText(/表示価格は動作確認用の架空価格/)).toBeVisible();
-  await page.getByLabel("サンプルチキンの個数").fill("3");
-  await page.getByLabel("サンプルポテトの個数").fill("1");
+  await expect(page.getByRole("link", { name: "KFC公式メニュー", exact: true })).toHaveAttribute("href", "https://www.kfc.co.jp/menu");
+  await expect(page.getByText(/計算対象は単品30商品のみ/)).toBeVisible();
+  await page.getByLabel("オリジナルチキン１ピースの個数").fill("3");
+  await page.getByLabel("ポテトSの個数").fill("1");
   await page.getByRole("button", { name: "購入プランを計算" }).click();
-  await expect(page.locator(".result .price")).toHaveText("950 円");
-  await expect(page.locator(".result")).toContainText("チキン単品（サンプル） × 1");
-  await expect(page.locator(".result")).toContainText("固定セット（サンプル） × 1");
+  await expect(page.locator(".result .price")).toHaveText("1,280 円");
+  await expect(page.locator(".result")).toContainText("オリジナルチキン１ピース × 3");
+  await expect(page.locator(".result")).toContainText("ポテトS × 1");
   await expect(page.locator(".result")).toContainText("余りはありません。");
-  await page.getByLabel("サンプルチキンの個数").fill("4");
+  await page.getByLabel("オリジナルチキン１ピースの個数").fill("4");
   await expect(page.locator(".result .price")).toHaveCount(0);
   await page.getByRole("button", { name: "購入プランを計算" }).click();
-  await expect(page.locator(".result .price")).toHaveText("1,100 円");
-  await expect(page.locator(".result")).toContainText("サンプルポテト × 1");
+  await expect(page.locator(".result .price")).toHaveText("1,610 円");
+  await expect(page.locator(".result")).toContainText("オリジナルチキン１ピース × 4");
+  await expect(page.locator(".result")).toContainText("余りはありません。");
+  await expect(page.locator(".official-menu tbody tr")).toHaveCount(67);
+  await page.getByRole("link", { name: "サイド", exact: true }).click();
+  await expect(page).toHaveURL(/#category-4$/);
+  const burgerSet = page.locator(".official-menu tr").filter({ hasText: "オリジナルチキンバーガーセット" });
+  await expect(burgerSet).toContainText("890 円");
+  await expect(burgerSet).toContainText("一覧表示のみ");
+  await expect(page.getByLabel("オリジナルチキンバーガーセットの個数", { exact: true })).toHaveCount(0);
   expect(errors).toEqual([]);
   expect(requests.every(url => url.startsWith("http://127.0.0.1:4173/kfc-problem-solver/"))).toBeTruthy();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
@@ -29,13 +38,13 @@ test("empty input, invalid quantity and repeated calculation", async ({ page }) 
   await page.getByRole("button", { name: "購入プランを計算" }).click();
   await expect(page.locator(".result .price")).toHaveText("0 円");
   await expect(page.getByText("購入は不要です。")).toBeVisible();
-  await page.getByLabel("サンプルチキンの個数").fill("101");
+  await page.getByLabel("オリジナルチキン１ピースの個数").fill("101");
   await expect(page.getByRole("button", { name: "購入プランを計算" })).toBeDisabled();
-  await page.getByLabel("サンプルチキンの個数").fill("1.5");
+  await page.getByLabel("オリジナルチキン１ピースの個数").fill("1.5");
   await expect(page.getByRole("button", { name: "購入プランを計算" })).toBeDisabled();
-  await page.getByLabel("サンプルチキンの個数").fill("2");
+  await page.getByLabel("オリジナルチキン１ピースの個数").fill("2");
   await page.getByRole("button", { name: "購入プランを計算" }).click();
-  await expect(page.locator(".result .price")).toHaveText("600 円");
+  await expect(page.locator(".result .price")).toHaveText("660 円");
 });
 
 test("download failures are recoverable", async ({ page }) => {
@@ -61,7 +70,7 @@ for (const action of ["cancel", "edit", "timeout"]) {
       await expect(page.locator(".result")).toContainText("最安値は確定していません", { timeout: 8_000 });
     } else {
       if (action === "cancel") await page.getByRole("button", { name: "キャンセル" }).click();
-      else await page.getByLabel("サンプルチキンの個数").fill("1");
+      else await page.getByLabel("オリジナルチキン１ピースの個数").fill("1");
       await expect(page.locator(".result")).toContainText("希望個数を入力して計算してください");
     }
     release();
