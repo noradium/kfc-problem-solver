@@ -6,6 +6,8 @@ import { instantiateSolver } from "../app/lib/wasm-api.ts";
 import type { OptimizationRequest } from "../app/domain/optimization";
 import { optimizationExamples } from "./fixtures/optimization.ts";
 import { compare, enumerate } from "./helpers/reference.ts";
+import { catalog } from "../app/data/catalog.ts";
+import { prepareCatalog } from "../app/domain/menu.ts";
 const solve = await instantiateSolver(await readFile("public/wasm/kfc_solver.wasm"));
 for (const example of optimizationExamples) {
   test(`WASM: ${example.name}`, () => {
@@ -75,4 +77,46 @@ test("prices exceeding 32 bit remain exact", () => {
   const result = solve(request);
   assert.equal(result.status, "optimal");
   if (result.status === "optimal") assert.equal(result.plan.totalPriceYen, 5_000_000_000);
+});
+
+test("official bundles beat singles, combine with singles and charge every upgrade", () => {
+  const cases: { demand: [number, number][]; price: number; bundle: string; surplus: number }[] = [
+    { demand: [[32115, 4], [29147, 2]], price: 1590, bundle: "I-000032863-007", surplus: 0 },
+    { demand: [[32115, 5], [29147, 2]], price: 1920, bundle: "I-000032863-007", surplus: 0 },
+    { demand: [[32115, 4], [29147, 1], [29151, 1]], price: 1590, bundle: "I-000032863-007", surplus: 0 },
+    { demand: [[31782, 1], [29147, 1], [32124, 1]], price: 890, bundle: "I-000032613-007", surplus: 0 },
+    { demand: [[31782, 1], [32118, 1], [32125, 1]], price: 1140, bundle: "I-000032613-007", surplus: 0 },
+    { demand: [[31788, 1], [32118, 1], [32125, 1]], price: 880, bundle: "I-000032923-007", surplus: 1 },
+    { demand: [[1000001, 1], [29147, 1]], price: 590, bundle: "I-000032351-007", surplus: 1 },
+    { demand: [[32115, 9]], price: 2590, bundle: "I-000032778-007", surplus: 0 },
+  ];
+  for (const example of cases) {
+    const demand = example.demand.map(([productId, quantity]) => ({ productId, quantity }));
+    const prepared = prepareCatalog(catalog, demand, "2026-11-09");
+    const result = solve({ schemaVersion: 1, catalog: prepared, demand });
+    assert.equal(result.status, "optimal", JSON.stringify(example));
+    if (result.status !== "optimal") continue;
+    assert.equal(result.plan.totalPriceYen, example.price);
+    assert.equal(result.plan.totalSurplusQuantity, example.surplus);
+    assert.ok(result.plan.purchases.some(line => prepared.offers.find(offer => offer.id === line.offerId)?.officialId === example.bundle));
+    const supplied = new Map<number, number>();
+    let price = 0, units = 0;
+    for (const line of result.plan.purchases) {
+      const offer = prepared.offers.find(offer => offer.id === line.offerId)!;
+      price += offer.priceYen * line.quantity; units += line.quantity;
+      for (const item of offer.items) supplied.set(item.productId, (supplied.get(item.productId) ?? 0) + item.quantity * line.quantity);
+    }
+    assert.equal(price, result.plan.totalPriceYen);
+    assert.equal(units, result.plan.totalOfferQuantity);
+    assert.ok(demand.every(item => supplied.get(item.productId)! >= item.quantity));
+  }
+});
+
+test("expanded menu offer limit is enforced at the WASM boundary", () => {
+  const request: OptimizationRequest = { schemaVersion: 1, catalog: { products: [{ id: 1, name: "item" }],
+    offers: Array.from({ length: 5001 }, (_, index) => ({ id: index + 1, name: "offer", priceYen: 1, items: [{ productId: 1, quantity: 1 }] })),
+  }, demand: [{ productId: 1, quantity: 1 }] };
+  assert.deepEqual(solve(request).status, "invalid_input");
+  request.catalog.offers.pop();
+  assert.deepEqual(solve(request, 0), { status: "time_limit", incumbent: null });
 });

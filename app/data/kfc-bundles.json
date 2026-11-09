@@ -1,0 +1,1222 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-09T03:59:30Z",
+  "components": [
+    {
+      "id": 1000001,
+      "name": "クレイジーディップチキン4ピース"
+    },
+    {
+      "id": 1000002,
+      "name": "KFC特製ソース"
+    },
+    {
+      "id": 1000003,
+      "name": "バーベキューソース"
+    },
+    {
+      "id": 1000004,
+      "name": "マスタードソース"
+    },
+    {
+      "id": 1000005,
+      "name": "キッズグッズ",
+      "selectable": false
+    }
+  ],
+  "choiceGroups": {
+    "rice-drink-m": {
+      "name": "ドリンクM",
+      "options": [
+        {
+          "productId": 32124,
+          "extraPriceYen": 0
+        }
+      ]
+    },
+    "potato": {
+      "name": "ポテト",
+      "options": [
+        {
+          "productId": 29147,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32118,
+          "extraPriceYen": 200
+        }
+      ]
+    },
+    "sauce": {
+      "name": "ソース",
+      "options": [
+        {
+          "productId": 1000002,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 1000003,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 1000004,
+          "extraPriceYen": 0
+        }
+      ]
+    },
+    "drink-m": {
+      "name": "ドリンクM",
+      "options": [
+        {
+          "productId": 32120,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32121,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32122,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32124,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32125,
+          "extraPriceYen": 50
+        }
+      ]
+    },
+    "sides": {
+      "name": "サイドメニュー",
+      "options": [
+        {
+          "productId": 29147,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 29150,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 29151,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 29152,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 29153,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32311,
+          "extraPriceYen": 30
+        },
+        {
+          "productId": 29154,
+          "extraPriceYen": 100
+        },
+        {
+          "productId": 32118,
+          "extraPriceYen": 200
+        }
+      ]
+    },
+    "drink-s": {
+      "name": "ドリンクS",
+      "options": [
+        {
+          "productId": 32121,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32122,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32123,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 32124,
+          "extraPriceYen": 20
+        },
+        {
+          "productId": 32125,
+          "extraPriceYen": 70
+        }
+      ]
+    },
+    "kids-chicken": {
+      "name": "チキン",
+      "options": [
+        {
+          "productId": 32115,
+          "extraPriceYen": 0
+        },
+        {
+          "productId": 31788,
+          "extraPriceYen": 20
+        }
+      ]
+    }
+  },
+  "bundles": [
+    {
+      "officialId": "I-000033020-007",
+      "priceYen": 930,
+      "fixedItems": [
+        {
+          "productId": 33017,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "rice-drink-m",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8185",
+          "checkedAt": "2026-11-09T03:59:30Z"
+        }
+      ],
+      "notes": [
+        "公式商品概要で確認したMドリンクの構成を対象とし、サイズ変更は含めません。"
+      ]
+    },
+    {
+      "officialId": "I-000032778-007",
+      "priceYen": 2590,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 9
+        }
+      ],
+      "groups": [],
+      "sources": [
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8184",
+          "checkedAt": "2026-11-09T03:59:30Z"
+        }
+      ],
+      "availableFrom": "2026-11-02",
+      "availableUntil": "2026-11-10",
+      "notes": [
+        "バーレル同時購入の追加サイド割引は計算対象外です。"
+      ]
+    },
+    {
+      "officialId": "I-000032408-007",
+      "priceYen": 1100,
+      "fixedItems": [
+        {
+          "productId": 1000001,
+          "quantity": 1
+        },
+        {
+          "productId": 29155,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "potato",
+          "quantity": 1
+        },
+        {
+          "groupId": "sauce",
+          "quantity": 3,
+          "distinct": true
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032408-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "4ae0fc7692e2bea6e88eb3690d6c04258666f955cb904cce5d34013b0226f156"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8173",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "ソースの選択個数。3種は各1つの構成。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032350-007",
+      "priceYen": 390,
+      "fixedItems": [
+        {
+          "productId": 1000001,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sauce",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032350-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "38cc43d30c491a278476a1a0e9a96af8873ae3040408b1c62b2c0afdd0e851ff"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8173",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "ソースの選択個数。3種は各1つの構成。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032351-007",
+      "priceYen": 590,
+      "fixedItems": [
+        {
+          "productId": 1000001,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "potato",
+          "quantity": 1
+        },
+        {
+          "groupId": "sauce",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032351-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "fb3cd0574248a84796f521286d5e3e0a2e3174d30dfb6cc0a914fcdb7146d06c"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8173",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "ソースの選択個数。3種は各1つの構成。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032268-007",
+      "priceYen": 1050,
+      "fixedItems": [
+        {
+          "productId": 32267,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032268-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "7b4df8af30224e48ffa1f90fad2ad25364ad9970a13dc1551b1c73ec048dbaf0"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032269-007",
+      "priceYen": 1350,
+      "fixedItems": [
+        {
+          "productId": 32267,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032269-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "2473f223731a1a317686c52c45db674d08000af805027d9eb98c858aa4ecc5cb"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000031565-007",
+      "priceYen": 990,
+      "fixedItems": [
+        {
+          "productId": 31566,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "sides",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000031565-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "472179d70b03d47523ac001a042f90024a1845002ea674a8af3ba89ec7520ebf"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8159",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "セット・パックのサイド選択個数。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032228-007",
+      "priceYen": 1590,
+      "fixedItems": [
+        {
+          "productId": 31566,
+          "quantity": 2
+        },
+        {
+          "productId": 32115,
+          "quantity": 2
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sides",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032228-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "67e11fd08b6e678e0843416aed45c64a2d7b34223280975316a0a70199cb8904"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8159",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "セット・パックのサイド選択個数。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032229-007",
+      "priceYen": 2490,
+      "fixedItems": [
+        {
+          "productId": 31566,
+          "quantity": 3
+        },
+        {
+          "productId": 32115,
+          "quantity": 3
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sides",
+          "quantity": 2
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032229-007-prod",
+          "fetchedAt": "2026-11-09T03:55:17Z",
+          "sourceSha256": "aa64872c1a303dc2a05f68c92f5e3766d2da46149283ef0ef9d2fd45f5f0be4f"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8159",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "セット・パックのサイド選択個数。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032230-007",
+      "priceYen": 2320,
+      "fixedItems": [
+        {
+          "productId": 31566,
+          "quantity": 6
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sides",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/campaign/I-000032230-007-prod",
+          "fetchedAt": "2026-11-09T03:55:16Z",
+          "sourceSha256": "57bc82643c328efafef6a6e67ff0f36c86d60b738e07961bc9489adbc5f870cf"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/8159",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "セット・パックのサイド選択個数。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032863-007",
+      "priceYen": 1590,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 4
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sides",
+          "quantity": 2
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/chicken/I-000032863-007-prod",
+          "fetchedAt": "2026-11-09T03:55:17Z",
+          "sourceSha256": "cc1882c11e619bbb77ddb40afd0fbfad6368d7979850442139c430ff98f91687"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/4143",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "サイド選択個数。価格と現在の選択肢は上記の現行商品詳細を使用。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032864-007",
+      "priceYen": 2390,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 6
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sides",
+          "quantity": 3
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/chicken/I-000032864-007-prod",
+          "fetchedAt": "2026-11-09T03:55:17Z",
+          "sourceSha256": "798a4515deb7419c048164efe1a564a70944018f9ab8b7570d71ce83fb1f8b8e"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/4143",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "サイド選択個数。価格と現在の選択肢は上記の現行商品詳細を使用。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032865-007",
+      "priceYen": 2990,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 8
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "sides",
+          "quantity": 4
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/chicken/I-000032865-007-prod",
+          "fetchedAt": "2026-11-09T03:55:18Z",
+          "sourceSha256": "6a569b517c679344e822c789617fdd0557c47a7f2a155fdc074c3ac81a41ccb7"
+        },
+        {
+          "sourceUrl": "https://japan.kfc.co.jp/news_release/4143",
+          "checkedAt": "2026-11-09T03:59:30Z",
+          "note": "サイド選択個数。価格と現在の選択肢は上記の現行商品詳細を使用。"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032613-007",
+      "priceYen": 890,
+      "fixedItems": [
+        {
+          "productId": 31782,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032613-007-prod",
+          "fetchedAt": "2026-11-09T03:55:17Z",
+          "sourceSha256": "1bae12ecc8b74a7f07dd98b390772db33d31883c0502b2d279a070c299bff0a0"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032615-007",
+      "priceYen": 940,
+      "fixedItems": [
+        {
+          "productId": 31783,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032615-007-prod",
+          "fetchedAt": "2026-11-09T03:55:18Z",
+          "sourceSha256": "6d4dadcb739078114e01c4ad4ad6629f4eadb69ab0700beff3a771e4e366f36e"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032616-007",
+      "priceYen": 940,
+      "fixedItems": [
+        {
+          "productId": 31784,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032616-007-prod",
+          "fetchedAt": "2026-11-09T03:55:18Z",
+          "sourceSha256": "ce90f1e5e161a8ace3e70d3a0eb25292bf1c2470271f7bb27978d389fdde4af9"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032617-007",
+      "priceYen": 940,
+      "fixedItems": [
+        {
+          "productId": 31785,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032617-007-prod",
+          "fetchedAt": "2026-11-09T03:55:19Z",
+          "sourceSha256": "f170ea2ef0283a0ef557f9c0e3d330c4074cd2f37ab4032f104c3671fc1645a0"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032800-007",
+      "priceYen": 1150,
+      "fixedItems": [
+        {
+          "productId": 31786,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032800-007-prod",
+          "fetchedAt": "2026-11-09T03:55:18Z",
+          "sourceSha256": "adebd9dc328f177a7c77274f267622c2e33324575a186c8f1b86d4beafd5bfa6"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032801-007",
+      "priceYen": 1190,
+      "fixedItems": [
+        {
+          "productId": 31787,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032801-007-prod",
+          "fetchedAt": "2026-11-09T03:55:18Z",
+          "sourceSha256": "90a1467b8451080a95b32e757f0c4545b8b9f66920640146ca6733d86658929b"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032614-007",
+      "priceYen": 890,
+      "fixedItems": [
+        {
+          "productId": 32592,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032614-007-prod",
+          "fetchedAt": "2026-11-09T03:55:19Z",
+          "sourceSha256": "43aa09c18cdfb28f2d55b7df36546bc49c44c7cff1685441ec187e918031abbb"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000029007-007",
+      "priceYen": 790,
+      "fixedItems": [
+        {
+          "productId": 32594,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000029007-007-prod",
+          "fetchedAt": "2026-11-09T03:55:19Z",
+          "sourceSha256": "1aa1e76899d890fee04c9bee88f992a91b42791271d6130e250b70845c9872d4"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000031994-007",
+      "priceYen": 790,
+      "fixedItems": [
+        {
+          "productId": 32593,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000031994-007-prod",
+          "fetchedAt": "2026-11-09T03:55:19Z",
+          "sourceSha256": "8ae48dd0aabbc84bf85733824e46d3cc72a8bb1ca9749f754594364218f743cb"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032618-007",
+      "priceYen": 1020,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 2
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032618-007-prod",
+          "fetchedAt": "2026-11-09T03:55:20Z",
+          "sourceSha256": "048396107d342e3416f9d5e8707185bbca9b921c8e255960d7d8cf36a50678c2"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032619-007",
+      "priceYen": 1190,
+      "fixedItems": [
+        {
+          "productId": 31782,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032619-007-prod",
+          "fetchedAt": "2026-11-09T03:55:20Z",
+          "sourceSha256": "3ff7dcc29b7d1a63c0648b36049bbbb809883be81affc920a4a86f0f247ef90c"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032621-007",
+      "priceYen": 1240,
+      "fixedItems": [
+        {
+          "productId": 31783,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032621-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "e9b80e1444a8d1d255ad556ab55aa9a3ec087045a48cc59fb5954888486b469c"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032622-007",
+      "priceYen": 1240,
+      "fixedItems": [
+        {
+          "productId": 31784,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032622-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "a8b18ca70a6c8f393e9d5250743e6db68a3d94c8384ad9c51a2c7ece050e8a85"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032623-007",
+      "priceYen": 1240,
+      "fixedItems": [
+        {
+          "productId": 31785,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032623-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "0d5b65dcd7a2061086b81cf95d3b5be815803a20e389969d3af110c82d973f84"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032802-007",
+      "priceYen": 1450,
+      "fixedItems": [
+        {
+          "productId": 31786,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032802-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "342c16f9083be0a4fa6cf1f7a8850050a0723d0f4e5008cb8d692896244b7117"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032803-007",
+      "priceYen": 1490,
+      "fixedItems": [
+        {
+          "productId": 31787,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032803-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "e1472e044c68a5af0776811b589773d06631c0750f619dc459bbf6c8b9cbc143"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032620-007",
+      "priceYen": 1190,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 1
+        },
+        {
+          "productId": 32592,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032620-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "f77577a2f4ce2a365758ef2c5e9a68296b2414b9fcf1131b195b152d4a1024fa"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032626-007",
+      "priceYen": 1320,
+      "fixedItems": [
+        {
+          "productId": 32115,
+          "quantity": 3
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032626-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "bf11c1543f0f0ae18f2114471a3f5e40a2261bae9bce06bd1864ce0413f54835"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032848-007",
+      "priceYen": 1090,
+      "fixedItems": [
+        {
+          "productId": 32594,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032848-007-prod",
+          "fetchedAt": "2026-11-09T03:55:21Z",
+          "sourceSha256": "3169d7a1ec0441e48cf6ab29e1390d39d0fb94ad8a7b58705661f1790184bb87"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032904-007",
+      "priceYen": 1090,
+      "fixedItems": [
+        {
+          "productId": 32593,
+          "quantity": 1
+        },
+        {
+          "productId": 32115,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-m",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/set/I-000032904-007-prod",
+          "fetchedAt": "2026-11-09T03:55:22Z",
+          "sourceSha256": "0542c75409c17cb898b637e0b8a0526f03993f7a6e968e0939cb99b343777a77"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000032923-007",
+      "priceYen": 590,
+      "fixedItems": [
+        {
+          "productId": 1000005,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-s",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        },
+        {
+          "groupId": "kids-chicken",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/kids/I-000032923-007-prod",
+          "fetchedAt": "2026-11-09T03:55:22Z",
+          "sourceSha256": "65dbfff059c617b54214044440321ad28d80acfd3e0c2413fc0fc09f9810665e"
+        }
+      ]
+    },
+    {
+      "officialId": "I-000029156-007",
+      "priceYen": 590,
+      "fixedItems": [
+        {
+          "productId": 29155,
+          "quantity": 1
+        },
+        {
+          "productId": 1000005,
+          "quantity": 1
+        }
+      ],
+      "groups": [
+        {
+          "groupId": "drink-s",
+          "quantity": 1
+        },
+        {
+          "groupId": "potato",
+          "quantity": 1
+        }
+      ],
+      "sources": [
+        {
+          "sourceUrl": "https://www.kfc.co.jp/menu/kids/I-000029156-007-prod",
+          "fetchedAt": "2026-11-09T03:55:22Z",
+          "sourceSha256": "833541ae7a365efb38c65bebf854e5ab8fd3080eb5d8f7bffc539babd752fd08"
+        }
+      ]
+    }
+  ]
+}
