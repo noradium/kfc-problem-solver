@@ -14,7 +14,7 @@
     "wasm:test": "node --test scripts/wasm.test.mjs",
     "test": "npm run catalog:test && npm run contract:test && cargo test --manifest-path solver/Cargo.toml --locked && npm run wasm:build && npm run wasm:test && npm run solver:test",
     "contract:test": "node --test --test-isolation=none tests/optimization-contract.test.ts",
-    "catalog:test": "node --test --test-isolation=none tests/catalog.test.ts",
+    "catalog:test": "node --test --test-isolation=none tests/catalog.test.ts tests/menu.test.ts",
     "solver:test": "node --test --test-isolation=none tests/solver.test.ts",
     "test:e2e": "playwright test"
   },

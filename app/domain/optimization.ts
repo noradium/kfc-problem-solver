@@ -4,7 +4,7 @@
 export const OPTIMIZATION_SCHEMA_VERSION = 1 as const;
 export const OPTIMIZATION_LIMITS = {
   products: 100,
-  offers: 500,
+  offers: 5_000,
   quantity: 100,
   priceYen: 1_000_000,
 } as const;

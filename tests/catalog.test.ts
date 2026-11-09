@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { catalog, catalogMetadata } from "../app/data/catalog.ts";
 import { OPTIMIZATION_LIMITS as limits } from "../app/domain/optimization.ts";
-import { menuEntries, menuCategories } from "../app/data/catalog.ts";
+import { menuEntries, menuCategories, bundleSnapshot, demandProducts } from "../app/data/catalog.ts";
 import snapshot from "../app/data/kfc-menu.json" with { type: "json" };
 
 // Runs whenever the handwritten menu is changed; external input validation
@@ -62,18 +62,50 @@ test("official snapshot retains source, prices, categories and unique official I
   assert.deepEqual(menuEntries.find(entry => entry.officialId === "I-000033020-007")?.categories, ["おすすめ", "セット"]);
 });
 
-test("only verified single units reach the optimizer, with stable official IDs", () => {
-  assert.equal(catalog.products.length, 30);
-  assert.equal(catalog.offers.length, 30);
-  assert.match(catalogMetadata.calculationScope, /セット・パック36商品は一覧表示のみ/);
-  for (const entry of menuEntries) {
-    const id = Number(entry.officialId.split("-")[1]);
-    const offer = catalog.offers.find(offer => offer.id === id);
-    if (entry.kind === "bundle") {
-      assert.equal(offer, undefined);
-      assert.equal(catalog.products.find(product => product.id === id), undefined);
-    } else {
-      assert.deepEqual(offer, { id, name: entry.name, priceYen: entry.priceYen, items: [{ productId: id, quantity: 1 }] });
+test("all 36 bundles have reviewed configurations, prices and source evidence", () => {
+  assert.equal(catalog.products.length, 35);
+  assert.equal(demandProducts.length, 34);
+  assert.equal(bundleSnapshot.schemaVersion, 1);
+  assert.equal(bundleSnapshot.bundles.length, 36);
+  assert.equal(new Set(bundleSnapshot.bundles.map(bundle => bundle.officialId)).size, 36);
+  for (const bundle of bundleSnapshot.bundles) {
+    const entry = menuEntries.find(entry => entry.officialId === bundle.officialId)!;
+    assert.equal(entry.kind, "bundle");
+    assert.equal(entry.priceYen, bundle.priceYen);
+    assert.ok(bundle.sources.length > 0);
+    for (const source of bundle.sources) {
+      assert.ok(["www.kfc.co.jp", "japan.kfc.co.jp"].includes(new URL(source.sourceUrl).hostname));
+      assert.ok(Number.isFinite(Date.parse(source.fetchedAt ?? source.checkedAt!)));
+      if (source.sourceSha256) assert.match(source.sourceSha256, /^[a-f0-9]{64}$/);
     }
+    for (const item of bundle.fixedItems) {
+      assert.ok(catalog.products.some(product => product.id === item.productId));
+      assert.ok(Number.isInteger(item.quantity) && item.quantity > 0);
+    }
+    for (const selection of bundle.groups) {
+      const group = bundleSnapshot.choiceGroups[selection.groupId];
+      assert.ok(group.options.length > 0);
+      assert.ok(Number.isInteger(selection.quantity) && selection.quantity > 0 && selection.quantity <= 4);
+      if (selection.distinct) assert.ok(selection.quantity <= group.options.length);
+      for (const option of group.options) {
+        assert.ok(catalog.products.some(product => product.id === option.productId));
+        assert.ok(Number.isInteger(option.extraPriceYen) && option.extraPriceYen >= 0);
+      }
+    }
+    const variants = catalog.offers.filter(offer => offer.officialId === bundle.officialId);
+    assert.ok(variants.length > 0);
+    assert.equal(Math.min(...variants.map(variant => variant.priceYen)), entry.priceYen);
+  }
+});
+
+test("single selling units retain official IDs and prices alongside bundles", () => {
+  assert.equal(catalog.offers.filter(offer => offer.kind === "single").length, 30);
+  for (const entry of menuEntries) {
+    if (entry.kind !== "single") continue;
+    const id = Number(entry.officialId.split("-")[1]);
+    const offer = catalog.offers.find(offer => offer.id === id)!;
+    assert.equal(offer.name, entry.name);
+    assert.equal(offer.priceYen, entry.priceYen);
+    assert.deepEqual(offer.items, [{ productId: id, quantity: 1 }]);
   }
 });

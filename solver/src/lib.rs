@@ -86,7 +86,7 @@ fn validate(v: &Value) -> Result<(), &'static str> {
     let products = array(&v["catalog"]["products"])?;
     let offers = array(&v["catalog"]["offers"])?;
     let demand = array(&v["demand"])?;
-    if products.len() > 100 || offers.len() > 500 || demand.len() > 100 {
+    if products.len() > 100 || offers.len() > 5_000 || demand.len() > 100 {
         return Err("limit_exceeded");
     }
     let mut product_ids = HashSet::new();
